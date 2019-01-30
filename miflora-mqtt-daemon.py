@@ -184,7 +184,7 @@ def init_sensors(type, sensors):
         
 # Pool & publish information from sensors
 def pool_sensors(type, sensors, parameters):
-    for [sensor_name, sensor] in sensors.items():
+    for [type, sensor_name, sensor] in sensors.items():
         data = dict()
         attempts = 2
         sensor['poller']._cache = None
@@ -486,10 +486,10 @@ while True:
     print_line('Status messages published', console=False, sd_notify=True)
 
     if daemon_enabled:
-        for i in range(int(sleep_period/sleep_period_mt)):
-            print_line('Sleeping ({} seconds) ...'.format(sleep_period/sleep_period_mt))
+        for i in range(int(sleep_period/sleep_period_mt) - 1):
+            print_line('Sleeping ({} seconds) ...'.format(sleep_period_mt))
+            sleep(sleep_period_mt)
             pool_sensors(sensor_type_mitempbt, mitempbts, mitempbt_parameters)
-            sleep(sleep_period/sleep_period_mt)
         print()
     else:
         print_line('Execution finished in non-daemon-mode', sd_notify=True)
